@@ -53,7 +53,8 @@ public class BaseController {
 	
 	@RequestMapping(value = "/send", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
-	public String sendEvent(@RequestBody ServiceEventRequest event) {				
+	public String sendEvent(@RequestBody String jsonData) {
+		/*
 		String jsonData;
 		try {
 			ObjectWriter ow = new ObjectMapper().writer();
@@ -63,6 +64,9 @@ public class BaseController {
 			logger.error("Invalid request:" + e.getStackTrace());
 			return "Error";
 		}
+		*/
+
+		System.out.println("JsonData:-->"+jsonData);
 
 		eventProducer.send("test-events", jsonData);
 		return "success";
@@ -70,7 +74,7 @@ public class BaseController {
 	
 	@RequestMapping(value = "test-events1/send", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
-	public String sendEvent1(@RequestBody ServiceEventRequest event) {				
+	public String sendEvent1(@RequestBody String event) {
 		String jsonData;
 		try {
 			ObjectWriter ow = new ObjectMapper().writer();
