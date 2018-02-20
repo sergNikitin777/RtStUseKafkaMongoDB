@@ -25,10 +25,9 @@ http://www.us.apache.org/dist/kafka/0.8.1.1/kafka_2.9.2-0.8.1.1.tgz
 6. Open any rest client(e.g PostMan) and submit a POST request as below with this 
 	URL http://127.0.0.1:8080/RealTimeAnalytics/send
 	Request JSON in the body of request: { "name": "Data4" }
-
-7. Run KafkaEventConsumer as java application
-8. In a new tab, run this URL: http://127.0.0.1:8080/RealTimeAnalytics/dashboard/all
-9. You will get the live streaming coming from your DB
+	
+7. In a new tab, run this URL: http://127.0.0.1:8080/RealTimeAnalytics/dashboard/all
+8. You will get the live streaming coming from your DB
 
 SUMMARY:
 a. Producer will read the data from PostMan and write it to Kafka bus.
