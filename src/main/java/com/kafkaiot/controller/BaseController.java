@@ -5,6 +5,7 @@ package com.kafkaiot.controller;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
@@ -53,7 +54,7 @@ public class BaseController {
 	
 	@RequestMapping(value = "/send", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
-	public String sendEvent(@RequestBody String jsonData) {
+	public String sendEvent(@RequestBody Map<String, Object> map) {
 		/*
 		String jsonData;
 		try {
@@ -65,6 +66,16 @@ public class BaseController {
 			return "Error";
 		}
 		*/
+
+		ObjectMapper mapperObj = new ObjectMapper();
+
+		String jsonData = null;
+
+		try {
+			jsonData = mapperObj.writeValueAsString(map);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		System.out.println("JsonData:-->"+jsonData);
 
