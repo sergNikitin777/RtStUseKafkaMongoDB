@@ -24,4 +24,6 @@
 
 	<!-- Use this post processor to translate any MongoExceptions thrown in @Repository annotated classes -->
 	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 </beans>
