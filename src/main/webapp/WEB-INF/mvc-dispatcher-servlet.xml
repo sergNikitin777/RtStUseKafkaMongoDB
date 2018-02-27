@@ -12,18 +12,23 @@
 		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 		<property name="supportedMediaTypes" value="application/json" />
 	</bean>
-	<bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
-		<property name="host" value="localhost" />
+
+	<bean id="mongoClient" class="com.mongodb.MongoClient">
+		<constructor-arg name="host" value="localhost"/>
+	</bean>
+
+	<bean id="mongo" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">
+
+		<constructor-arg name="mongoClient" ref="mongoClient"/>
+		<constructor-arg name="databaseName" value="stream"/>
 	</bean>
 	
 	<!-- MongoTemplate for connecting and quering the documents in the database -->
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongo" ref="mongo" />
-		<constructor-arg name="databaseName" value="stream" />
+		<constructor-arg ref="mongo"/>
 	</bean>
 
 	<!-- Use this post processor to translate any MongoExceptions thrown in @Repository annotated classes -->
 	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
-	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 </beans>
