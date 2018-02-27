@@ -4,8 +4,12 @@ import org.joda.time.DateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes = {@Index(name = "IDX_SenlabMtime", columnList = "messageDate"),
+        @Index(name = "IDX_SenlabMdevEUI", columnList = "devEUI")})
 public class SenlabMEntity extends BaseEntity {
     @Column
     private long count;

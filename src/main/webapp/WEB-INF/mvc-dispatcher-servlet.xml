@@ -12,7 +12,7 @@
 
 	<context:component-scan base-package="com.kafkaiot.controller" />
 
-	<jpa:repositories base-package="com.kafkaiot.repository" base-class="BaseJpaRepositoryImpl"/>
+	<jpa:repositories base-package="com.kafkaiot.repository" base-class="com.kafkaiot.repository.BaseJpaRepositoryImpl"/>
 
 	<bean id="jsonConverter"
 		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
