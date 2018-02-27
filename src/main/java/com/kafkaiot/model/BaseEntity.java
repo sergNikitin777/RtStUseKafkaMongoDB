@@ -1,5 +1,6 @@
 package com.kafkaiot.model;
 
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -9,19 +10,19 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
+    protected Long id;
     @Column
     @NotNull
-    private Date messageDate;
+    protected Date messageDate;
     @Column
     @NotNull
-    private String devEUI;
+    protected String devEUI;
     @Column
     @NotNull
-    private Integer fPort;
+    protected Integer fPort;
     @Column
     @NotNull
-    private Integer type;
+    protected Integer type;
 
     BaseEntity() {
     }
