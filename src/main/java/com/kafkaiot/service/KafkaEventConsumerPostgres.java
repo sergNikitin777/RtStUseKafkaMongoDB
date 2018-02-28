@@ -4,7 +4,11 @@
 package com.kafkaiot.service;
 
 import com.kafkaiot.controller.BaseController;
+import com.kafkaiot.model.SenlabHEntity;
+import com.kafkaiot.model.SenlabMEntity;
 import com.kafkaiot.model.SenlabTEntity;
+import com.kafkaiot.repository.SenlabHEntityDao;
+import com.kafkaiot.repository.SenlabMEntityDao;
 import com.kafkaiot.repository.SenlabTEntityDao;
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;
@@ -21,8 +25,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.UnknownHostException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -41,6 +47,10 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
 
     @Autowired
     SenlabTEntityDao senlabTEntityDao;
+    @Autowired
+    SenlabMEntityDao senlabMEntityDao;
+    @Autowired
+    SenlabHEntityDao senlabHEntityDao;
 
     public static void main(String[] argv) {
         System.out.println("start");
@@ -71,9 +81,6 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
 
         System.out.println("inside run");
 
-
-
-
         Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
         topicCountMap.put(TOPIC, new Integer(1));
 
@@ -86,26 +93,68 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
             try {
                 String data = new String(it.next().message());
                 System.out.println(data);
-
+                RestTemplate restTemplate;
+                final String urlTermo = "http://localhost:8080/charts/sensors/thermo";
+                final String urlCount = "http://localhost:8080/charts/sensors/count";
+                final String urlHumidity = "http://localhost:8080/charts/sensors/humidity";
                 JsonEventParser eventParser = new JsonEventParser(data);
+                switch (eventParser.getType()) {
+                    case 1:
+                        try {
+                            SenlabTEntity senlabTEntity = eventParser.parseSenlabTMessage();
+                            System.out.println(senlabTEntity.toString());
+                            senlabTEntityDao.save(senlabTEntity);
+                            restTemplate = new RestTemplate();
 
-                SenlabTEntity senlabTEntity = eventParser.parseSenlabTMessage();
+                            String requestJson = "{\"id\": \"33\",\"value\": " + senlabTEntity.getTempC() + "}";
+                            HttpHeaders headers = new HttpHeaders();
+                            headers.setContentType(MediaType.APPLICATION_JSON);
+                            HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
+                            String answer = restTemplate.postForObject(urlTermo, entity, String.class);
+                            System.out.println(answer);
+                        } catch (Exception e) {
+                            logger.error("SenlabTEntity ", e);
+                        }
+                        break;
+                    case 2:
+                        try {
+                            SenlabMEntity senlabMEntity = eventParser.parseSenlabMMessage();
+                            System.out.println(senlabMEntity.toString());
+                            senlabMEntityDao.save(senlabMEntity);
+                            restTemplate = new RestTemplate();
 
-                System.out.println(senlabTEntity.toString());
+                            String requestJson = "{\"id\": \"33\",\"value\": " + senlabMEntity.getCount() + "}";
+                            HttpHeaders headers = new HttpHeaders();
+                            headers.setContentType(MediaType.APPLICATION_JSON);
 
-                senlabTEntityDao.save(senlabTEntity);
+                            HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
+                            String answer = restTemplate.postForObject(urlCount, entity, String.class);
+                            System.out.println(answer);
+                        } catch (Exception e) {
+                            logger.error("SenlabMEntity ", e);
+                        }
+                        break;
+                    case 3:
+                        try {
+                            SenlabHEntity senlabHEntity = eventParser.parseSenlabHMessage();
+                            System.out.println(senlabHEntity.toString());
+                            senlabHEntityDao.save(senlabHEntity);
+                            restTemplate = new RestTemplate();
+                            String requestJson = "{\"id\": \"33\",\"value\": " + senlabHEntity.getTempC() + "}";
+                            HttpHeaders headers = new HttpHeaders();
+                            headers.setContentType(MediaType.APPLICATION_JSON);
+                            HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
+                            String answer = restTemplate.postForObject(urlTermo, entity, String.class);
+                            System.out.println(answer);
 
-                RestTemplate restTemplate = new RestTemplate();
-
-                String url = "http://localhost:8080/charts/sensors/thermo";
-                String requestJson = "{\"id\": \"33\",\"value\": "+senlabTEntity.getTempC()+"}";
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-
-                HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
-                String answer = restTemplate.postForObject(url, entity, String.class);
-                System.out.println(answer);
-
+                            requestJson = "{\"id\": \"33\",\"value\": " + senlabHEntity.getHumidity() + "}";
+                            entity = new HttpEntity<String>(requestJson, headers);
+                            answer = restTemplate.postForObject(urlHumidity, entity, String.class);
+                            System.out.println(answer);
+                        } catch (Exception e) {
+                            logger.error("", e);
+                        }
+                }
                 //store.storeRawEvent(data);
             } catch (Exception e) {
                 logger.error(
