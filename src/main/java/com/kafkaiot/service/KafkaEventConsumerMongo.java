@@ -16,7 +16,7 @@ import kafka.javaapi.consumer.ConsumerConnector;
 import org.apache.log4j.BasicConfigurator;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.net.UnknownHostException;
@@ -27,7 +27,7 @@ import java.util.concurrent.ExecutorService;
  * @author svnikitin
  */
 @Service
-public class KafkaEventConsumer extends Thread implements EventConsumer {
+public class KafkaEventConsumerMongo extends Thread implements EventConsumer {
 
     final static String clientId = "SarojKafkaClient";
     final static String TOPIC = "test-events";
@@ -39,17 +39,17 @@ public class KafkaEventConsumer extends Thread implements EventConsumer {
             .getLogger(BaseController.class);
 
 
-    @Autowired
-    SenlabHEntityDao senlabHEntityDao;
+    //@Autowired
+    //SenlabHEntityDao senlabHEntityDao;
 
     public static void main(String[] argv) {
         System.out.println("start");
         BasicConfigurator.configure();
-        KafkaEventConsumer kafkaConsumer = new KafkaEventConsumer();
+        KafkaEventConsumerMongo kafkaConsumer = new KafkaEventConsumerMongo();
         kafkaConsumer.start();
     }
 
-    public KafkaEventConsumer() {
+    public KafkaEventConsumerMongo() {
 
         Properties props = new Properties();
         props.put("zookeeper.connect", "10.59.1.210:2181");
@@ -66,22 +66,11 @@ public class KafkaEventConsumer extends Thread implements EventConsumer {
     /**
      * This thread will pull the events from the topic and insert into mongo DB
      */
-    @SuppressWarnings("unchecked")
+    //@SuppressWarnings("unchecked")
+    @Async
     public void run() {
 
         System.out.println("inside run");
-
-        SenlabHEntity senlabHEntity = new SenlabHEntity();
-
-        //senlabHEntity.setId(12L);
-
-        senlabHEntity.setHumidity(23);
-        senlabHEntity.setType(3);
-        senlabHEntity.setDevEUI("werw");
-        senlabHEntity.setMessageDate(new Date());
-        senlabHEntity.setfPort(343);
-
-        senlabHEntityDao.save(senlabHEntity);
 
         DataStore store = null;
         try {

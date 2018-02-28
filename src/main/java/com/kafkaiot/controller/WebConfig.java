@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -30,7 +29,10 @@ import java.util.List;
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
-    KafkaEventConsumer kafkaEventConsumer;
+    KafkaEventConsumerMongo kafkaEventConsumerMongo;
+
+    @Autowired
+    KafkaEventConsumerPostgres kafkaEventConsumerPostgres;
 
     @PostConstruct
     public void contextInitialized() {
@@ -38,7 +40,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         System.out.println("start");
         BasicConfigurator.configure();
 
-        kafkaEventConsumer.start();
+        kafkaEventConsumerMongo.start();
+
+        kafkaEventConsumerPostgres.start();
 
 
 //        try {
