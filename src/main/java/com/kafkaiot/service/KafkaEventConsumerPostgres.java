@@ -52,7 +52,7 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
     public KafkaEventConsumerPostgres() {
 
         Properties props = new Properties();
-        props.put("zookeeper.connect", "10.59.1.210:2181");
+        props.put("zookeeper.connect", "127.0.0.1:2181");
         props.put("group.id", "test-group-postgres");
         props.put("zookeeper.session.timeout.ms", "400");
         props.put("zookeeper.sync.time.ms", "10000");

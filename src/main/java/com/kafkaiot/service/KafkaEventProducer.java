@@ -41,7 +41,7 @@ public class KafkaEventProducer implements EventProducer {
 
 				props.put("serializer.class", "kafka.serializer.StringEncoder");
 				props.put("metadata.broker.list",
-						"10.59.1.210:9092,10.59.1.210:9092");
+						"127.0.0.1:9092,127.0.0.1:9092");
 				props.put("partitioner.class",
 						"com.kafkaiot.service.SimplePartitioner");
 				ProducerConfig config = new ProducerConfig(props);

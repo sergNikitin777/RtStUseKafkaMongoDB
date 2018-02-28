@@ -31,7 +31,7 @@ public class KafkaEventConsumerMongo extends Thread implements EventConsumer {
 
     final static String clientId = "SarojKafkaClient";
     final static String TOPIC = "test-events";
-    private static final String MONGO_HOST = "10.59.1.210";
+    private static final String MONGO_HOST = "127.0.0.1";
     private static final int MONGO_PORT = 27017;
     private ConsumerConnector consumerConnector;
     private ExecutorService executor;
@@ -52,7 +52,7 @@ public class KafkaEventConsumerMongo extends Thread implements EventConsumer {
     public KafkaEventConsumerMongo() {
 
         Properties props = new Properties();
-        props.put("zookeeper.connect", "10.59.1.210:2181");
+        props.put("zookeeper.connect", "127.0.0.1:2181");
         props.put("group.id", "test-group");
         props.put("zookeeper.session.timeout.ms", "400");
         props.put("zookeeper.sync.time.ms", "10000");
