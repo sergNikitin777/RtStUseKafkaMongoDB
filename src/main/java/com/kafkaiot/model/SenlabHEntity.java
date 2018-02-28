@@ -4,8 +4,12 @@ import org.joda.time.DateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes = {@Index(name = "IDX_SenlabHtime", columnList = "messageDate"),
+        @Index(name = "IDX_SenlabHdevEUI", columnList = "devEUI")})
 public class SenlabHEntity extends BaseEntity {
     @Column
     private int temperature;

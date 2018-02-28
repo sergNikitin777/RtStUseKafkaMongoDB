@@ -23,8 +23,6 @@ import com.kafkaiot.service.EventProducer;
 import com.kafkaiot.service.KafkaEventProducer;
 
 
-
-
 /**
  * @author kafkaiot
  *
@@ -40,7 +38,8 @@ public class BaseController {
 	private static final String VIEW_DATA = "allData";
 	private final static org.slf4j.Logger logger = LoggerFactory.getLogger(BaseController.class);
 	private final static EventProducer eventProducer = KafkaEventProducer.getConnection(KAFKA_HOST, KAFKA_PORT);
-	
+
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(ModelMap model) {
 		return VIEW_INDEX;
@@ -48,7 +47,7 @@ public class BaseController {
 
 	/** 
 	 * Events sent to kafka Cluster by the producer
-	 * @return
+     * @return
 	 */
 	
 	@RequestMapping(value = "/send", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")

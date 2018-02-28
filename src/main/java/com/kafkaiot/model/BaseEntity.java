@@ -4,8 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@Table(indexes = {@Index(name = "IDX_time", columnList = "messageDate"),
-        @Index(name = "IDX_devEUI", columnList = "devEUI")})
+@MappedSuperclass
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,4 +1,4 @@
-package com.kafkaiot.dao;
+package com.kafkaiot.repository;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;

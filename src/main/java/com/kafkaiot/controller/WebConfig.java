@@ -3,8 +3,8 @@
  */
 package com.kafkaiot.controller;
 
-import com.kafkaiot.service.KafkaEventConsumer;
 import org.apache.log4j.BasicConfigurator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +14,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import com.kafkaiot.service.*;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -27,17 +28,29 @@ import java.util.List;
 @ComponentScan(basePackages = "com.kafkaiot.controller")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
+    @Autowired
+    KafkaEventConsumerMongo kafkaEventConsumerMongo;
+
+    @Autowired
+    KafkaEventConsumerPostgres kafkaEventConsumerPostgres;
+
     @PostConstruct
     public void contextInitialized() {
         System.out.println("Context Initialised");
         System.out.println("start");
         BasicConfigurator.configure();
-        try {
-            KafkaEventConsumer kafkaConsumer = new KafkaEventConsumer();
-            kafkaConsumer.start();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+
+        kafkaEventConsumerMongo.start();
+
+        kafkaEventConsumerPostgres.start();
+
+
+//        try {
+//            KafkaEventConsumer kafkaConsumer = new KafkaEventConsumer();
+//            kafkaConsumer.start();
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
     }
 
 

@@ -1,4 +1,4 @@
-package com.kafkaiot.dao;
+package com.kafkaiot.repository;
 
 import com.kafkaiot.model.SenlabMEntity;
 
