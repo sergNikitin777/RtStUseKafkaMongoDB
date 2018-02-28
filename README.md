@@ -14,7 +14,7 @@ http://www.us.apache.org/dist/kafka/0.8.1.1/kafka_2.9.2-0.8.1.1.tgz
 	bin/kafka-server-start.sh config/server.properties
 
 	c. Create the topic
-	bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test-events
+	bin/kafka-topics.sh --create --zookeeper 10.59.1.210:2181 --replication-factor 1 --partitions 1 --topic test-events
 	Replication of opic can be incresed as per the available brokers and requirement
 
 2. Donwload and install the mongoDB

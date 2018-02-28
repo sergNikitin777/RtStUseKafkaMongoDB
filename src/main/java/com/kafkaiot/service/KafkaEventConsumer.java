@@ -6,6 +6,8 @@ package com.kafkaiot.service;
 import com.kafkaiot.controller.BaseController;
 import com.kafkaiot.dao.DataStore;
 import com.kafkaiot.dao.MongoDataStore;
+import com.kafkaiot.model.SenlabHEntity;
+import com.kafkaiot.repository.SenlabHEntityDao;
 import kafka.consumer.Consumer;
 import kafka.consumer.ConsumerConfig;
 import kafka.consumer.ConsumerIterator;
@@ -13,27 +15,32 @@ import kafka.consumer.KafkaStream;
 import kafka.javaapi.consumer.ConsumerConnector;
 import org.apache.log4j.BasicConfigurator;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Service;
 
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 
 /**
  * @author svnikitin
  */
+@Service
 public class KafkaEventConsumer extends Thread implements EventConsumer {
 
     final static String clientId = "SarojKafkaClient";
     final static String TOPIC = "test-events";
-    private static final String MONGO_HOST = "localhost";
+    private static final String MONGO_HOST = "10.59.1.210";
     private static final int MONGO_PORT = 27017;
     private ConsumerConnector consumerConnector;
     private ExecutorService executor;
     private final static org.slf4j.Logger logger = LoggerFactory
             .getLogger(BaseController.class);
+
+
+    @Autowired
+    SenlabHEntityDao senlabHEntityDao;
 
     public static void main(String[] argv) {
         System.out.println("start");
@@ -45,7 +52,7 @@ public class KafkaEventConsumer extends Thread implements EventConsumer {
     public KafkaEventConsumer() {
 
         Properties props = new Properties();
-        props.put("zookeeper.connect", "localhost:2181");
+        props.put("zookeeper.connect", "10.59.1.210:2181");
         props.put("group.id", "test-group");
         props.put("zookeeper.session.timeout.ms", "400");
         props.put("zookeeper.sync.time.ms", "10000");
@@ -63,6 +70,18 @@ public class KafkaEventConsumer extends Thread implements EventConsumer {
     public void run() {
 
         System.out.println("inside run");
+
+        SenlabHEntity senlabHEntity = new SenlabHEntity();
+
+        //senlabHEntity.setId(12L);
+
+        senlabHEntity.setHumidity(23);
+        senlabHEntity.setType(3);
+        senlabHEntity.setDevEUI("werw");
+        senlabHEntity.setMessageDate(new Date());
+        senlabHEntity.setfPort(343);
+
+        senlabHEntityDao.save(senlabHEntity);
 
         DataStore store = null;
         try {

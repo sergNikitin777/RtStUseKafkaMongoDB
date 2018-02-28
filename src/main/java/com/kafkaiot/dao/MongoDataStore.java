@@ -42,7 +42,7 @@ public class MongoDataStore implements DataStore {
 	 * @throws UnknownHostException
 	 */
 	
-	private static final String MONGO_HOST = "localhost";
+	private static final String MONGO_HOST = "10.59.1.210";
 	private static final int MONGO_PORT = 27017;
 	public static DataStore getInstance(String mongoHost, int mongoPort)
 			throws UnknownHostException {
