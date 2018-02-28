@@ -14,8 +14,12 @@ import kafka.javaapi.consumer.ConsumerConnector;
 import org.apache.log4j.BasicConfigurator;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.UnknownHostException;
 import java.util.*;
@@ -90,6 +94,17 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                 System.out.println(senlabTEntity.toString());
 
                 senlabTEntityDao.save(senlabTEntity);
+
+                RestTemplate restTemplate = new RestTemplate();
+
+                String url = "http://localhost:8080/charts/sensors/thermo";
+                String requestJson = "{\"id\": \"33\",\"value\": "+senlabTEntity.getTempC()+"}";
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+
+                HttpEntity<String> entity = new HttpEntity<String>(requestJson,headers);
+                String answer = restTemplate.postForObject(url, entity, String.class);
+                System.out.println(answer);
 
                 //store.storeRawEvent(data);
             } catch (Exception e) {
