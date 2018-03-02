@@ -98,6 +98,8 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                 final String urlCount = "http://10.59.1.210:8080/charts/sensors/count";
                 final String urlHumidity = "http://10.59.1.210:8080/charts/sensors/humidity";
                 JsonEventParser eventParser = new JsonEventParser(data);
+                if (eventParser.getFport() != 3)
+                    continue;
                 switch (eventParser.getType()) {
                     case 1:
                         try {

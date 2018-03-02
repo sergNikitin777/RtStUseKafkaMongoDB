@@ -74,6 +74,10 @@ public class JsonEventParser {
         }
     }
 
+    public int getFport() {
+        return Integer.parseInt(source.getDevEUIUplink().getFPort());
+    }
+
     public int getType() {
         return Integer.parseInt(hexData.substring(0, 2), 16);
     }
