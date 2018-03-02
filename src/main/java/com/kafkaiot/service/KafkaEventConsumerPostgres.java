@@ -62,7 +62,7 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
     public KafkaEventConsumerPostgres() {
 
         Properties props = new Properties();
-        props.put("zookeeper.connect", "127.0.0.1:2181");
+        props.put("zookeeper.connect", "10.59.1.210:2181");
         props.put("group.id", "test-group-postgres");
         props.put("zookeeper.session.timeout.ms", "400");
         props.put("zookeeper.sync.time.ms", "10000");
@@ -94,9 +94,9 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                 String data = new String(it.next().message());
                 System.out.println(data);
                 RestTemplate restTemplate;
-                final String urlTermo = "http://localhost:8080/charts/sensors/thermo";
-                final String urlCount = "http://localhost:8080/charts/sensors/count";
-                final String urlHumidity = "http://localhost:8080/charts/sensors/humidity";
+                final String urlTermo = "http://10.59.1.210:8080/charts/sensors/thermo";
+                final String urlCount = "http://10.59.1.210:8080/charts/sensors/count";
+                final String urlHumidity = "http://10.59.1.210:8080/charts/sensors/humidity";
                 JsonEventParser eventParser = new JsonEventParser(data);
                 switch (eventParser.getType()) {
                     case 1:
