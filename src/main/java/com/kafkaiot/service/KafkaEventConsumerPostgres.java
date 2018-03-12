@@ -4,9 +4,12 @@
 package com.kafkaiot.service;
 
 import com.kafkaiot.controller.BaseController;
+import com.kafkaiot.model.IM2300;
 import com.kafkaiot.model.SenlabHEntity;
 import com.kafkaiot.model.SenlabMEntity;
 import com.kafkaiot.model.SenlabTEntity;
+import com.kafkaiot.pojo.DevEUI;
+import com.kafkaiot.repository.IM2300Dao;
 import com.kafkaiot.repository.SenlabHEntityDao;
 import com.kafkaiot.repository.SenlabMEntityDao;
 import com.kafkaiot.repository.SenlabTEntityDao;
@@ -25,11 +28,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
 
 /**
  * @author svnikitin
@@ -39,25 +40,17 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
 
     final static String clientId = "SarojKafkaClient";
     final static String TOPIC = "test-events";
-    private ConsumerConnector consumerConnector;
-    private ExecutorService executor;
-    private final static org.slf4j.Logger logger = LoggerFactory
-            .getLogger(BaseController.class);
-
-
+    private final static org.slf4j.Logger logger = LoggerFactory.getLogger(BaseController.class);
     @Autowired
     SenlabTEntityDao senlabTEntityDao;
     @Autowired
     SenlabMEntityDao senlabMEntityDao;
     @Autowired
     SenlabHEntityDao senlabHEntityDao;
-
-    public static void main(String[] argv) {
-        System.out.println("start");
-        BasicConfigurator.configure();
-        KafkaEventConsumerPostgres kafkaConsumer = new KafkaEventConsumerPostgres();
-        kafkaConsumer.start();
-    }
+    @Autowired
+    IM2300Dao im2300Dao;
+    private ConsumerConnector consumerConnector;
+    private ExecutorService executor;
 
     public KafkaEventConsumerPostgres() {
 
@@ -71,6 +64,13 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
         consumerConnector = Consumer
                 .createJavaConsumerConnector(consumerConfig);
 
+    }
+
+    public static void main(String[] argv) {
+        System.out.println("start");
+        BasicConfigurator.configure();
+        KafkaEventConsumerPostgres kafkaConsumer = new KafkaEventConsumerPostgres();
+        kafkaConsumer.start();
     }
 
     /**
@@ -89,6 +89,8 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
         Map<String, List<KafkaStream<byte[], byte[]>>> consumerMap = consumerConnector.createMessageStreams(topicCountMap);
         KafkaStream<byte[], byte[]> streams = consumerMap.get(TOPIC).get(0);
         ConsumerIterator<byte[], byte[]> it = streams.iterator();
+        Map<Integer, DevEUI> pakets = new HashMap<>();
+
         while (it.hasNext()) {
             try {
                 String data = new String(it.next().message());
@@ -98,7 +100,18 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                 final String urlCount = "http://localhost:8080/charts/sensors/count";
                 final String urlHumidity = "http://localhost:8080/charts/sensors/humidity";
                 JsonEventParser eventParser = new JsonEventParser(data);
-                if (eventParser.getFport() != 3)
+                if (eventParser.getSource().getDevEUIUplink().getDevEUI().equals("aaa")) {
+                    pakets.put(eventParser.getPacketNumber(), eventParser.getSource());
+                    if (pakets.size() == 3) {
+                        IM2300 entity = JsonEventParser.getPacketData(pakets.values().stream().map(devEUI -> devEUI.getDevEUIUplink().getPayloadHex()).collect(Collectors.toList()));
+                        entity.setType(4);
+                        entity.setDevEUI(eventParser.getSource().getDevEUIUplink().getDevEUI());
+                        entity.setfPort(Integer.valueOf(eventParser.getSource().getDevEUIUplink().getFPort()));
+                        entity.setMessageDate(new Date(entity.getTime()));
+                        im2300Dao.save(entity);
+                        pakets.clear();
+                    }
+                } else if (eventParser.getFport() != 3)
                     continue;
                 switch (eventParser.getType()) {
                     case 1:
