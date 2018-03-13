@@ -29,6 +29,7 @@
                 <entry key="hibernate.order_inserts" value="false"/>  <!--default is false--> <!--currently broken by TXTableDefinitionNode.parent-->
                 <entry key="hbm2ddl.auto" value="update"/>
                 <entry key="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect"/>
+                <entry key="hibernate.hbm2ddl" value="update"/>
             </map>
         </property>
     </bean>
