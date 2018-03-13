@@ -20,7 +20,7 @@
 	</bean>
 
 	<bean id="mongoClient" class="com.mongodb.MongoClient">
-		<constructor-arg name="host" value="10.59.1.210"/>
+		<constructor-arg name="host" value="10.59.1.26"/>
 	</bean>
 
 	<bean id="mongo" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">

@@ -31,8 +31,8 @@ import com.kafkaiot.service.KafkaEventProducer;
 public class BaseController {
 
 	private static final String KAFKA_PORT = "2181";
-	private static final String KAFKA_HOST = "10.59.1.210";
-	private static final String MONGO_HOST = "10.59.1.210";
+	private static final String KAFKA_HOST = "10.59.1.26";
+	private static final String MONGO_HOST = "10.59.1.26";
 	private static final int MONGO_PORT = 27017;
 	private static final String VIEW_INDEX = "index";
 	private static final String VIEW_DATA = "allData";
