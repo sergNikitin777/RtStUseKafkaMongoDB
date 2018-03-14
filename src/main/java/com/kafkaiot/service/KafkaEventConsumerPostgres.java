@@ -100,7 +100,8 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                 final String urlCount = "http://localhost:8080/charts/sensors/count";
                 final String urlHumidity = "http://localhost:8080/charts/sensors/humidity";
                 JsonEventParser eventParser = new JsonEventParser(data);
-                if (eventParser.getSource().getDevEUIUplink().getDevEUI().equals("363335386C357A0E")) {
+                if (eventParser.getSource().getDevEUIUplink().getDevEUI().equals("363335386C357A0E")
+                        && eventParser.getSource().getDevEUIUplink().getCustomerID().equals("1100000039")) {
                     pakets.put(eventParser.getPacketNumber(), eventParser.getSource());
                     if (pakets.size() == 3) {
                         IM2300 entity = JsonEventParser.getPacketData(pakets.values().stream().map(devEUI -> devEUI.getDevEUIUplink().getPayloadHex()).collect(Collectors.toList()));

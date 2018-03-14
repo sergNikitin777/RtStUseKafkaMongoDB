@@ -2,8 +2,10 @@ package com.kafkaiot.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table
 public class IM2300 extends BaseEntity {
 
     @Column
