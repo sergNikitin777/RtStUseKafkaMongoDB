@@ -5,6 +5,7 @@ import com.kafkaiot.model.SenlabHEntity;
 import com.kafkaiot.model.SenlabMEntity;
 import com.kafkaiot.model.SenlabTEntity;
 import com.kafkaiot.pojo.DevEUI;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.util.List;
@@ -67,6 +68,7 @@ public class JsonEventParser {
     private String hexData;
     public JsonEventParser(String eventMessage) {
         ObjectMapper om = new ObjectMapper();
+        om.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
             source = om.readValue(eventMessage, DevEUI.class);
             //hexData =  javax.xml.bind.DatatypeConverter.parseHexBinary(source.getDevEUIUplink().getPayloadHex());
