@@ -90,6 +90,7 @@ public class KafkaEventConsumerMongo extends Thread implements EventConsumer {
         ConsumerIterator<byte[], byte[]> it = streams.iterator();
         while (it.hasNext()) {
             try {
+
                 String data = new String(it.next().message());
                 System.out.println(data);
                 store.storeRawEvent(data);
