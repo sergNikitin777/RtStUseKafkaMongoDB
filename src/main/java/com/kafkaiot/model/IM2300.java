@@ -328,4 +328,42 @@ public class IM2300 extends BaseEntity {
     public void setP3(Float p3) {
         P3 = p3;
     }
+
+    @Override
+    public String toString() {
+        return "IM2300{" +
+                "time=" + time +
+                ", Qt1=" + Qt1 +
+                ", Qt2=" + Qt2 +
+                ", Qt3=" + Qt3 +
+                ", Qt4=" + Qt4 +
+                ", dQt1=" + dQt1 +
+                ", dQt3=" + dQt3 +
+                ", Wt1=" + Wt1 +
+                ", Wt2=" + Wt2 +
+                ", Wt3=" + Wt3 +
+                ", Wt4=" + Wt4 +
+                ", T1=" + T1 +
+                ", T2=" + T2 +
+                ", T3=" + T3 +
+                ", T4=" + T4 +
+                ", Qo1=" + Qo1 +
+                ", Qo2=" + Qo2 +
+                ", Qo3=" + Qo3 +
+                ", Qo4=" + Qo4 +
+                ", Qm1=" + Qm1 +
+                ", Qm2=" + Qm2 +
+                ", Qm3=" + Qm3 +
+                ", Qm4=" + Qm4 +
+                ", Gm1=" + Gm1 +
+                ", Gm2=" + Gm2 +
+                ", Gm3=" + Gm3 +
+                ", Gm4=" + Gm4 +
+                ", dGm1=" + dGm1 +
+                ", dGm3=" + dGm3 +
+                ", P1=" + P1 +
+                ", P2=" + P2 +
+                ", P3=" + P3 +
+                '}';
+    }
 }

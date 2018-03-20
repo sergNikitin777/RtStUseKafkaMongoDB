@@ -51,4 +51,13 @@ public class SenlabHEntity extends BaseEntity {
     public void setTempC(double tempC) {
         this.tempC = tempC;
     }
+
+    @Override
+    public String toString() {
+        return "SenlabHEntity{" +
+                "temperature=" + temperature +
+                ", humidity=" + humidity +
+                ", tempC=" + tempC +
+                '}';
+    }
 }

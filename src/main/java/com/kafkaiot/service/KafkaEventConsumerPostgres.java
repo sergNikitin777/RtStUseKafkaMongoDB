@@ -110,6 +110,7 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                         entity.setfPort(Integer.valueOf(eventParser.getSource().getDevEUIUplink().getFPort()));
                         entity.setMessageDate(new Date(entity.getTime()));
                         im2300Dao.save(entity);
+                        logger.info(entity.toString());
                         pakets.clear();
                     }
                 } else if (eventParser.getFport() != 3)
@@ -120,6 +121,7 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                             SenlabTEntity senlabTEntity = eventParser.parseSenlabTMessage();
                             System.out.println(senlabTEntity.toString());
                             senlabTEntityDao.save(senlabTEntity);
+                            logger.info(senlabTEntity.toString());
                             restTemplate = new RestTemplate();
 
                             String requestJson = "{\"id\": \"33\",\"value\": " + senlabTEntity.getTempC() + "}";
@@ -127,7 +129,8 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                             headers.setContentType(MediaType.APPLICATION_JSON);
                             HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
                             String answer = restTemplate.postForObject(urlTermo, entity, String.class);
-                            System.out.println(answer);
+                            System.out.println(senlabTEntity);
+
                         } catch (Exception e) {
                             logger.error("SenlabTEntity ", e);
                         }
@@ -137,6 +140,7 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                             SenlabMEntity senlabMEntity = eventParser.parseSenlabMMessage();
                             System.out.println(senlabMEntity.toString());
                             senlabMEntityDao.save(senlabMEntity);
+                            logger.info(senlabMEntity.toString());
                             restTemplate = new RestTemplate();
 
                             String requestJson = "{\"id\": \"33\",\"value\": " + senlabMEntity.getCount() + "}";
@@ -155,8 +159,9 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                             SenlabHEntity senlabHEntity = eventParser.parseSenlabHMessage();
                             System.out.println(senlabHEntity.toString());
                             senlabHEntityDao.save(senlabHEntity);
+                            logger.info(senlabHEntity.toString());
                             restTemplate = new RestTemplate();
-                            String requestJson = "{\"id\": \"33\",\"value\": " + senlabHEntity.getTempC() + "}";
+                            String requestJson = "{\"id\": \"33\",\"value\": " + senlabHEntity.getHumidity() + "}";
                             HttpHeaders headers = new HttpHeaders();
                             headers.setContentType(MediaType.APPLICATION_JSON);
                             HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
@@ -174,8 +179,7 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                 //store.storeRawEvent(data);
             } catch (Exception e) {
                 logger.error(
-                        "Throwing Exception while inserting data to Mongo DB",
-                        e);
+                        "Throwing Exception while inserting data to Mongo DB", e);
             }
         }
     }

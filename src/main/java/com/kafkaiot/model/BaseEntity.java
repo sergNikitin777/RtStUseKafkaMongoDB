@@ -72,4 +72,15 @@ public abstract class BaseEntity {
     public void setType(Integer type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "id=" + id +
+                ", messageDate=" + messageDate +
+                ", devEUI='" + devEUI + '\'' +
+                ", fPort=" + fPort +
+                ", type=" + type +
+                '}';
+    }
 }

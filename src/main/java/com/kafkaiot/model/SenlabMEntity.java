@@ -29,4 +29,11 @@ public class SenlabMEntity extends BaseEntity {
     public void setCount(long count) {
         this.count = count;
     }
+
+    @Override
+    public String toString() {
+        return "SenlabMEntity{" +
+                "count=" + count +
+                '}';
+    }
 }
