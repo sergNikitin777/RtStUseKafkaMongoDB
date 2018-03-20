@@ -126,7 +126,7 @@ public class JsonEventParser {
         return Integer.parseUnsignedInt(hexData.substring(startPos, endPos), 16);
     }
 
-    private static float parseFloat(String hexData, int startPos, int endPos) {
+    public static float parseFloat(String hexData, int startPos, int endPos) {
         return Float.intBitsToFloat(Integer.parseInt(hexData.substring(startPos, endPos), 16));
     }
 
@@ -242,7 +242,7 @@ public class JsonEventParser {
         entity.setP2(parseFloat(hexData, 74, 82));
 //300063 0x003E Значение канала P3 float 3 41 4
         //result.put("P3", parseFloat(hexData, 82, 90));
-        entity.setP3(parseFloat(hexData, 82, 90));
+        entity.setP3(parseFloat(hexData, 82, hexData.length()));
 
         return entity;
     }

@@ -1,5 +1,7 @@
 package test.com.kafkaiot.service;
 
+import com.google.common.collect.ImmutableList;
+import com.kafkaiot.model.IM2300;
 import com.kafkaiot.model.SenlabTEntity;
 import com.kafkaiot.service.JsonEventParser;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,5 +36,140 @@ class JsonEventParserTest {
 
     @Test
     void parseSenlabMMessage() {
+    }
+
+    @Test
+    void parseIM2300() {
+        String p1 = "{\"DevEUI_uplink\" : {\n" +
+                "    \"Time\" : \"2018-03-19T15:39:38.84+00:00\",\n" +
+                "    \"DevEUI\" : \"363335386C357A0E\",\n" +
+                "    \"FPort\" : \"3\",\n" +
+                "    \"FCntUp\" : \"12354\",\n" +
+                "    \"ADRbit\" : \"1\",\n" +
+                "    \"MType\" : \"2\",\n" +
+                "    \"FCntDn\" : \"788\",\n" +
+                "    \"payload_hex\" : \"010013ac6447d70562417699fe431e7fea3f002bb04337a38b41bcd239482438770000000045ecbc0445ff\",\n" +
+                "    \"mic_hex\" : \"1f3be5d4\",\n" +
+                "    \"Lrcid\" : \"00000241\",\n" +
+                "    \"LrrRSSI\" : \"-105.000000\",\n" +
+                "    \"LrrSNR\" : \"10.000000\",\n" +
+                "    \"SpFact\" : \"7\",\n" +
+                "    \"SubBand\" : \"G2\",\n" +
+                "    \"Channel\" : \"LC7\",\n" +
+                "    \"DevLrrCnt\" : \"1\",\n" +
+                "    \"Lrrid\" : \"FF010EC9\",\n" +
+                "    \"Late\" : \"0\",\n" +
+                "    \"LrrLAT\" : \"57.922054\",\n" +
+                "    \"LrrLON\" : \"56.139839\",\n" +
+                "    \"Lrrs\" : {\n" +
+                "      \"Lrr\" : [{\n" +
+                "          \"Lrrid\" : \"FF010EC9\",\n" +
+                "          \"Chain\" : \"0\",\n" +
+                "          \"LrrRSSI\" : \"-105.000000\",\n" +
+                "          \"LrrSNR\" : \"10.000000\",\n" +
+                "          \"LrrESP\" : \"-105.413925\"\n" +
+                "        }]\n" +
+                "    },\n" +
+                "    \"CustomerID\" : \"1100000039\",\n" +
+                "    \"CustomerData\" : {\n" +
+                "      \"alr\" : {\n" +
+                "        \"pro\" : \"LORA/Generic\",\n" +
+                "        \"ver\" : \"1\"\n" +
+                "      }\n" +
+                "    },\n" +
+                "    \"ModelCfg\" : \"0\",\n" +
+                "    \"InstantPER\" : \"0.000000\",\n" +
+                "    \"MeanPER\" : \"0.019322\",\n" +
+                "    \"DevAddr\" : \"6890CC32\"\n" +
+                "  }}";
+
+        String p2 = "{\"DevEUI_uplink\" : {\n" +
+                "    \"Time\" : \"2018-03-19T15:39:48.113+00:00\",\n" +
+                "    \"DevEUI\" : \"363335386C357A0E\",\n" +
+                "    \"FPort\" : \"3\",\n" +
+                "    \"FCntUp\" : \"12355\",\n" +
+                "    \"ADRbit\" : \"1\",\n" +
+                "    \"MType\" : \"2\",\n" +
+                "    \"FCntDn\" : \"788\",\n" +
+                "    \"payload_hex\" : \"022baf00000000000000000000000000000000000000000000000000000000000000000000000000000000\",\n" +
+                "    \"mic_hex\" : \"0aef4e05\",\n" +
+                "    \"Lrcid\" : \"00000241\",\n" +
+                "    \"LrrRSSI\" : \"-104.000000\",\n" +
+                "    \"LrrSNR\" : \"10.000000\",\n" +
+                "    \"SpFact\" : \"7\",\n" +
+                "    \"SubBand\" : \"G2\",\n" +
+                "    \"Channel\" : \"LC8\",\n" +
+                "    \"DevLrrCnt\" : \"1\",\n" +
+                "    \"Lrrid\" : \"FF010EC9\",\n" +
+                "    \"Late\" : \"0\",\n" +
+                "    \"LrrLAT\" : \"57.922054\",\n" +
+                "    \"LrrLON\" : \"56.139839\",\n" +
+                "    \"Lrrs\" : {\n" +
+                "      \"Lrr\" : [{\n" +
+                "          \"Lrrid\" : \"FF010EC9\",\n" +
+                "          \"Chain\" : \"0\",\n" +
+                "          \"LrrRSSI\" : \"-104.000000\",\n" +
+                "          \"LrrSNR\" : \"10.000000\",\n" +
+                "          \"LrrESP\" : \"-104.413925\"\n" +
+                "        }]\n" +
+                "    },\n" +
+                "    \"CustomerID\" : \"1100000039\",\n" +
+                "    \"CustomerData\" : {\n" +
+                "      \"alr\" : {\n" +
+                "        \"pro\" : \"LORA/Generic\",\n" +
+                "        \"ver\" : \"1\"\n" +
+                "      }\n" +
+                "    },\n" +
+                "    \"ModelCfg\" : \"0\",\n" +
+                "    \"InstantPER\" : \"0.000000\",\n" +
+                "    \"MeanPER\" : \"0.018356\",\n" +
+                "    \"DevAddr\" : \"6890CC32\"\n" +
+                "  }}";
+
+        String p3 = "{\"DevEUI_uplink\" : {\n" +
+                "    \"Time\" : \"2018-03-19T15:39:58.0+00:00\",\n" +
+                "    \"DevEUI\" : \"363335386C357A0E\",\n" +
+                "    \"FPort\" : \"3\",\n" +
+                "    \"FCntUp\" : \"12356\",\n" +
+                "    \"ADRbit\" : \"1\",\n" +
+                "    \"MType\" : \"2\",\n" +
+                "    \"FCntDn\" : \"788\",\n" +
+                "    \"payload_hex\" : \"03000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\n" +
+                "    \"mic_hex\" : \"6b963ff7\",\n" +
+                "    \"Lrcid\" : \"00000241\",\n" +
+                "    \"LrrRSSI\" : \"-107.000000\",\n" +
+                "    \"LrrSNR\" : \"8.000000\",\n" +
+                "    \"SpFact\" : \"7\",\n" +
+                "    \"SubBand\" : \"G2\",\n" +
+                "    \"Channel\" : \"LC5\",\n" +
+                "    \"DevLrrCnt\" : \"1\",\n" +
+                "    \"Lrrid\" : \"FF010EC9\",\n" +
+                "    \"Late\" : \"0\",\n" +
+                "    \"LrrLAT\" : \"57.922054\",\n" +
+                "    \"LrrLON\" : \"56.139839\",\n" +
+                "    \"Lrrs\" : {\n" +
+                "      \"Lrr\" : [{\n" +
+                "          \"Lrrid\" : \"FF010EC9\",\n" +
+                "          \"Chain\" : \"0\",\n" +
+                "          \"LrrRSSI\" : \"-107.000000\",\n" +
+                "          \"LrrSNR\" : \"8.000000\",\n" +
+                "          \"LrrESP\" : \"-107.638924\"\n" +
+                "        }]\n" +
+                "    },\n" +
+                "    \"CustomerID\" : \"1100000039\",\n" +
+                "    \"CustomerData\" : {\n" +
+                "      \"alr\" : {\n" +
+                "        \"pro\" : \"LORA/Generic\",\n" +
+                "        \"ver\" : \"1\"\n" +
+                "      }\n" +
+                "    },\n" +
+                "    \"ModelCfg\" : \"0\",\n" +
+                "    \"InstantPER\" : \"0.000000\",\n" +
+                "    \"MeanPER\" : \"0.017438\",\n" +
+                "    \"DevAddr\" : \"6890CC32\"\n" +
+                "  }}";
+        IM2300 item = JsonEventParser.getPacketData(ImmutableList.of(new JsonEventParser(p1).getSource().getDevEUIUplink().getPayloadHex(),
+                new JsonEventParser(p2).getSource().getDevEUIUplink().getPayloadHex(),
+                new JsonEventParser(p3).getSource().getDevEUIUplink().getPayloadHex()));
     }
 }
