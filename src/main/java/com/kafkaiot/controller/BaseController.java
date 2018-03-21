@@ -117,4 +117,5 @@ public class BaseController {
 	        System.out.println("Controller:"+mongo.getAll());
 	        return VIEW_DATA;  
 	 }
+
 }

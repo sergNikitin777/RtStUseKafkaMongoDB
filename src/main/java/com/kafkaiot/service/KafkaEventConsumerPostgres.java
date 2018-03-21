@@ -112,6 +112,24 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                         im2300Dao.save(entity);
                         logger.info(entity.toString());
                         pakets.clear();
+
+                        restTemplate = new RestTemplate();
+                        String requestJson = "[" +
+                                                "{\"id\": \"Qt1\",\"value\": " + entity.getQt1() + "}" +
+                                                ",{\"id\": \"Qt2\",\"value\": " + entity.getQt2() + "}" +
+                                                ",{\"id\": \"Qt3\",\"value\": " + entity.getQt3() + "}" +
+                                                ",{\"id\": \"Qt4\",\"value\": " + entity.getQt4() + "}" +
+                                                ",{\"id\": \"dQt1\",\"value\": " + entity.getdQt1() + "}" +
+                                                ",{\"id\": \"dQt3\",\"value\": " + entity.getdQt3() + "}" +
+                                                ",{\"id\": \"Wt1\",\"value\": " + entity.getWt1() + "}" +
+                                                ",{\"id\": \"Wt3\",\"value\": " + entity.getWt3() + "}" +
+                                                ",{\"id\": \"Wt4\",\"value\": " + entity.getWt4() + "}" +
+                                              "]";
+                        HttpHeaders headers = new HttpHeaders();
+                        headers.setContentType(MediaType.APPLICATION_JSON);
+                        HttpEntity<String> httpEntity = new HttpEntity<String>(requestJson, headers);
+                        String answer = restTemplate.postForObject(urlTermo, httpEntity, String.class);
+                        System.out.println(answer);
                     }
                 } else if (eventParser.getFport() != 3)
                     continue;
@@ -122,13 +140,12 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                             System.out.println(senlabTEntity.toString());
                             senlabTEntityDao.save(senlabTEntity);
                             logger.info(senlabTEntity.toString());
-                            restTemplate = new RestTemplate();
-
-                            String requestJson = "{\"id\": \"33\",\"value\": " + senlabTEntity.getTempC() + "}";
-                            HttpHeaders headers = new HttpHeaders();
-                            headers.setContentType(MediaType.APPLICATION_JSON);
-                            HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
-                            String answer = restTemplate.postForObject(urlTermo, entity, String.class);
+//                            restTemplate = new RestTemplate();
+//                            String requestJson = "{\"id\": \"33\",\"value\": " + senlabTEntity.getTempC() + "}";
+//                            HttpHeaders headers = new HttpHeaders();
+//                            headers.setContentType(MediaType.APPLICATION_JSON);
+//                            HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
+//                            String answer = restTemplate.postForObject(urlTermo, entity, String.class);
                             System.out.println(senlabTEntity);
 
                         } catch (Exception e) {
@@ -160,18 +177,18 @@ public class KafkaEventConsumerPostgres extends Thread implements EventConsumer 
                             System.out.println(senlabHEntity.toString());
                             senlabHEntityDao.save(senlabHEntity);
                             logger.info(senlabHEntity.toString());
-                            restTemplate = new RestTemplate();
-                            String requestJson = "{\"id\": \"33\",\"value\": " + senlabHEntity.getHumidity() + "}";
-                            HttpHeaders headers = new HttpHeaders();
-                            headers.setContentType(MediaType.APPLICATION_JSON);
-                            HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
-                            String answer = restTemplate.postForObject(urlTermo, entity, String.class);
-                            System.out.println(answer);
+                            //restTemplate = new RestTemplate();
+                            //String requestJson = "{\"id\": \"33\",\"value\": " + senlabHEntity.getHumidity() + "}";
+                            //HttpHeaders headers = new HttpHeaders();
+                            //headers.setContentType(MediaType.APPLICATION_JSON);
+                            //HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
+                            //String answer = restTemplate.postForObject(urlTermo, entity, String.class);
+                            //System.out.println(answer);
 
-                            requestJson = "{\"id\": \"33\",\"value\": " + senlabHEntity.getHumidity() + "}";
-                            entity = new HttpEntity<String>(requestJson, headers);
-                            answer = restTemplate.postForObject(urlHumidity, entity, String.class);
-                            System.out.println(answer);
+                            //requestJson = "{\"id\": \"33\",\"value\": " + senlabHEntity.getHumidity() + "}";
+                            //entity = new HttpEntity<String>(requestJson, headers);
+                            //answer = restTemplate.postForObject(urlHumidity, entity, String.class);
+                            //System.out.println(answer);
                         } catch (Exception e) {
                             logger.error("", e);
                         }
